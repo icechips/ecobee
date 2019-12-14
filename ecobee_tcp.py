@@ -38,7 +38,7 @@ while True:
         sock = (result.split(':')[1])
         port = int(sock, 16)
 
-        #create the connection
+        #save the connection as a string
         connection = str(ip) + ":" + str(port)
 
         #add the connection to the current proc file list
