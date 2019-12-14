@@ -3,15 +3,6 @@
 from time import sleep
 from datetime import datetime
 
-#open /proc/net/tcp for reading
-#f = open("/proc/net/tcp", "r")
-#skip the header line
-#next(f)
-
-#create our custom timestamp
-#time = datetime.now()
-#timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-
 #create connection list and current proc file list
 connection_list = []
 proc_file = []
@@ -28,13 +19,13 @@ while True:
     time = datetime.now()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
-    #iterate through the lines, print only remote addresses and port, with the custom timestamp
+    #iterate through the lines, grabbing only the remote address and port
     for lines in f:
 
-        #pull out remote addresses
+        #pull out remote address
         result = lines.split()[2]
 
-        #convert remote address from little endian to ip format
+        #convert remote address to standard ip format
         addr = (result.split(':')[0])
         #split address into each individual octet
         addr_long = ["".join(addr) for addr in zip(*[iter(addr)]*2)]
@@ -43,7 +34,7 @@ while True:
         #rewrite into standard ip format
         ip = (".".join(str(x) for x in reversed(addr_long)))
 
-        #convert remote port to regular format
+        #convert remote port to standard format
         sock = (result.split(':')[1])
         port = int(sock, 16)
 
@@ -62,6 +53,7 @@ while True:
             print(f"{timestamp}: New Connection: {connection}")
 
         #if the connection is in the proc file and in the connection list, do nothing
+
 
     #check if connection is removed
     #if a connection(x) that is in the connection list isnt in the completed proc file, remove the connection from the connection list and print that
